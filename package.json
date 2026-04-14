@@ -1,0 +1,46 @@
+{
+  "name": "lcm2m-caddis-mcp",
+  "version": "0.1.0",
+  "description": "MCP server for the LCM2M Caddis VMCP API",
+  "private": true,
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LCM2M/lcm2m-caddis-mcp.git"
+  },
+  "bugs": {
+    "url": "https://github.com/LCM2M/lcm2m-caddis-mcp/issues"
+  },
+  "homepage": "https://github.com/LCM2M/lcm2m-caddis-mcp#readme",
+  "bin": {
+    "lcm2m-caddis-mcp": "./dist/index.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "dev": "mcp-inspector tsx --env-file=.env.local src/index.ts",
+    "start": "node dist/index.js",
+    "test": "tsx --test src/client.test.ts src/tools/schemas.test.ts",
+    "typecheck": "tsc --noEmit",
+    "lint": "biome check .",
+    "lint:fix": "biome check --write .",
+    "format": "biome format --write .",
+    "docker:build": "docker build --target runtime -t lcm2m-caddis-mcp ."
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.29.0",
+    "zod": "^3.25.0"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.4.8",
+    "@modelcontextprotocol/inspector": "^0.18.0",
+    "@types/node": "^25.0.0",
+    "tsx": "^4.20.0",
+    "typescript": "^5.7.0"
+  },
+  "engines": {
+    "node": ">=25"
+  }
+}
