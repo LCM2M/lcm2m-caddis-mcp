@@ -22,7 +22,7 @@ export function registerStatusReasonTools(
     },
     async () =>
       runTool(async () => {
-        const { body } = await client.vmcp('/statusreasons');
+        const { body } = await client.vm2m('/statusreasons');
         return body;
       }),
   );

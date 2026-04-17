@@ -20,7 +20,7 @@ export function registerTagGroupTools(
     },
     async () =>
       runTool(async () => {
-        const { body } = await client.vmcp('/taggroups');
+        const { body } = await client.vm2m('/taggroups');
         return body;
       }),
   );
@@ -37,7 +37,7 @@ export function registerTagGroupTools(
     },
     async ({ tagGroupId }) =>
       runTool(async () => {
-        const { body } = await client.vmcp(`/taggroups/${encodePathSegment(tagGroupId)}`);
+        const { body } = await client.vm2m(`/taggroups/${encodePathSegment(tagGroupId)}`);
         return body;
       }),
   );

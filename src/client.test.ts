@@ -222,11 +222,11 @@ describe('CaddisApiClient — lazy login', () => {
     });
     const client = new CaddisApiClient(baseConfig, mock.fn);
 
-    await client.vmcp('/equipment');
-    await client.vmcp('/equipment');
+    await client.vm2m('/equipment');
+    await client.vm2m('/equipment');
 
     assert.equal(mock.calls.length, 3, 'expected 1 login + 2 requests');
-    assert.ok(mock.calls[0]?.url.endsWith('/vmcp/sessions'));
+    assert.ok(mock.calls[0]?.url.endsWith('/vm2m/sessions'));
     assert.equal(mock.calls[0]?.init.method, 'POST');
     assert.equal(headerOf(at(mock.calls, 1), 'Authorization'), jwt);
     assert.equal(headerOf(at(mock.calls, 2), 'Authorization'), jwt);
@@ -237,7 +237,7 @@ describe('CaddisApiClient — lazy login', () => {
     const mock = mockFetch((_, i) => (i === 0 ? jsonRes(200, { token: jwt }) : textRes(200, 'ok')));
     const client = new CaddisApiClient(baseConfig, mock.fn);
 
-    await client.vmcp('/alarms', { query: { equipIds: [1, 2], pm: true } });
+    await client.vm2m('/alarms', { query: { equipIds: [1, 2], pm: true } });
 
     const url = mock.calls[1]?.url ?? '';
     assert.ok(url.includes('equipIds%5B%5D=1'), `missing ids[] in ${url}`);
@@ -258,7 +258,7 @@ describe('CaddisApiClient — 401 one-shot re-login', () => {
     });
     const client = new CaddisApiClient(baseConfig, mock.fn);
 
-    const res = await client.vmcp('/equipment');
+    const res = await client.vm2m('/equipment');
 
     assert.equal(res.body, 'equipment csv');
     assert.equal(mock.calls.length, 4);
@@ -276,7 +276,7 @@ describe('CaddisApiClient — 429 retry loop', () => {
     });
     const client = new CaddisApiClient(baseConfig, mock.fn);
 
-    const res = await client.vmcp('/equipment');
+    const res = await client.vm2m('/equipment');
     assert.equal(res.body, 'success');
     assert.equal(mock.calls.length, 3);
   });
@@ -290,7 +290,7 @@ describe('CaddisApiClient — 429 retry loop', () => {
     const client = new CaddisApiClient({ ...baseConfig, maxRetries: 2 }, mock.fn);
 
     await assert.rejects(
-      client.vmcp('/equipment'),
+      client.vm2m('/equipment'),
       (err: unknown) => err instanceof ApiError && err.status === 429,
     );
     // login + initial + 2 retries = 4 calls
@@ -310,7 +310,7 @@ describe('CaddisApiClient — 429 retry loop', () => {
     );
 
     await assert.rejects(
-      client.vmcp('/equipment'),
+      client.vm2m('/equipment'),
       (err: unknown) => err instanceof ApiError && err.status === 429,
     );
     // login + 1 attempt, no retries (budget blown immediately)
@@ -324,7 +324,7 @@ describe('CaddisApiClient — concurrent login dedup', () => {
     let loginCount = 0;
     const fn: FetchLike = async (input) => {
       const url = input.toString();
-      if (url.endsWith('/vmcp/sessions')) {
+      if (url.endsWith('/vm2m/sessions')) {
         loginCount++;
         await new Promise((r) => setTimeout(r, 10));
         return jsonRes(200, { token: jwt });
@@ -334,9 +334,9 @@ describe('CaddisApiClient — concurrent login dedup', () => {
     const client = new CaddisApiClient(baseConfig, fn);
 
     await Promise.all([
-      client.vmcp('/equipment'),
-      client.vmcp('/equipment'),
-      client.vmcp('/equipment'),
+      client.vm2m('/equipment'),
+      client.vm2m('/equipment'),
+      client.vm2m('/equipment'),
     ]);
 
     assert.equal(loginCount, 1, 'login should only fire once');
@@ -356,10 +356,10 @@ describe('CaddisApiClient — JWT expiry', () => {
     });
     const client = new CaddisApiClient(baseConfig, mock.fn);
 
-    await client.vmcp('/equipment');
-    await client.vmcp('/equipment');
+    await client.vm2m('/equipment');
+    await client.vm2m('/equipment');
 
-    const loginCalls = mock.calls.filter((c) => c.url.endsWith('/vmcp/sessions'));
+    const loginCalls = mock.calls.filter((c) => c.url.endsWith('/vm2m/sessions'));
     assert.equal(loginCalls.length, 2);
     assert.equal(headerOf(at(mock.calls, 3), 'Authorization'), freshJwt);
   });
@@ -377,7 +377,7 @@ describe('CaddisApiClient — CompanySelectionRequiredError', () => {
     );
     const client = new CaddisApiClient({ ...baseConfig, companyId: undefined }, mock.fn);
 
-    await assert.rejects(client.vmcp('/equipment'), (err: unknown) => {
+    await assert.rejects(client.vm2m('/equipment'), (err: unknown) => {
       if (!(err instanceof CompanySelectionRequiredError)) return false;
       assert.equal(err.companies.length, 2);
       return true;
@@ -386,14 +386,14 @@ describe('CaddisApiClient — CompanySelectionRequiredError', () => {
 });
 
 describe('CaddisApiClient — body passthrough', () => {
-  it('vmcp returns raw text unchanged', async () => {
+  it('vm2m returns raw text unchanged', async () => {
     const jwt = makeJwt();
     const mock = mockFetch((_, i) =>
       i === 0 ? jsonRes(200, { token: jwt }) : textRes(200, 'id,name\n1,foo'),
     );
     const client = new CaddisApiClient(baseConfig, mock.fn);
 
-    const res = await client.vmcp('/equipment');
+    const res = await client.vm2m('/equipment');
     assert.equal(res.body, 'id,name\n1,foo');
     assert.equal(res.contentType, 'text/csv');
   });

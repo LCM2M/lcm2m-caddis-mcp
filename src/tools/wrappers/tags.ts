@@ -28,7 +28,7 @@ export function registerTagTools(
     },
     async ({ active, tagGroupId }) =>
       runTool(async () => {
-        const { body } = await client.vmcp('/tags', { query: { active, tagGroupId } });
+        const { body } = await client.vm2m('/tags', { query: { active, tagGroupId } });
         return body;
       }),
   );
@@ -45,7 +45,7 @@ export function registerTagTools(
     },
     async ({ tagId }) =>
       runTool(async () => {
-        const { body } = await client.vmcp(`/tags/${encodePathSegment(tagId)}`);
+        const { body } = await client.vm2m(`/tags/${encodePathSegment(tagId)}`);
         return body;
       }),
   );

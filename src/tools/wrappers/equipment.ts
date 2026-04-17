@@ -30,7 +30,7 @@ export function registerEquipmentTools(
     },
     async () =>
       runTool(async () => {
-        const { body } = await client.vmcp('/equipment');
+        const { body } = await client.vm2m('/equipment');
         return body;
       }),
   );
@@ -47,7 +47,7 @@ export function registerEquipmentTools(
     },
     async ({ equipId }) =>
       runTool(async () => {
-        const { body } = await client.vmcp(`/equipment/${encodePathSegment(equipId)}`);
+        const { body } = await client.vm2m(`/equipment/${encodePathSegment(equipId)}`);
         return body;
       }),
   );
@@ -75,7 +75,7 @@ export function registerEquipmentTools(
     },
     async ({ equipId, ...query }) =>
       runTool(async () => {
-        const { body } = await client.vmcp(`/equipment/${encodePathSegment(equipId)}/utilization`, {
+        const { body } = await client.vm2m(`/equipment/${encodePathSegment(equipId)}/utilization`, {
           query,
         });
         return body;
@@ -96,7 +96,7 @@ export function registerEquipmentTools(
     },
     async ({ equipId }) =>
       runTool(async () => {
-        const { body } = await client.vmcp(`/equipment/${encodePathSegment(equipId)}/schedule`);
+        const { body } = await client.vm2m(`/equipment/${encodePathSegment(equipId)}/schedule`);
         return body;
       }),
   );
@@ -115,7 +115,7 @@ export function registerEquipmentTools(
     },
     async ({ equipId, ...query }) =>
       runTool(async () => {
-        const { body } = await client.vmcp(`/equipment/${encodePathSegment(equipId)}/cycles`, {
+        const { body } = await client.vm2m(`/equipment/${encodePathSegment(equipId)}/cycles`, {
           query,
         });
         return body;
@@ -136,7 +136,7 @@ export function registerEquipmentTools(
     },
     async ({ equipId, ...query }) =>
       runTool(async () => {
-        const { body } = await client.vmcp(`/equipment/${encodePathSegment(equipId)}/statuslogs`, {
+        const { body } = await client.vm2m(`/equipment/${encodePathSegment(equipId)}/statuslogs`, {
           query,
         });
         return body;
@@ -157,7 +157,7 @@ export function registerEquipmentTools(
     },
     async ({ equipId, ...query }) =>
       runTool(async () => {
-        const { body } = await client.vmcp(`/equipment/${encodePathSegment(equipId)}/telemetry`, {
+        const { body } = await client.vm2m(`/equipment/${encodePathSegment(equipId)}/telemetry`, {
           query,
         });
         return body;
@@ -178,7 +178,7 @@ export function registerEquipmentTools(
     },
     async ({ equipId, ...query }) =>
       runTool(async () => {
-        const { body } = await client.vmcp(
+        const { body } = await client.vm2m(
           `/equipment/${encodePathSegment(equipId)}/shifthistory`,
           { query },
         );
@@ -200,7 +200,7 @@ export function registerEquipmentTools(
     },
     async ({ equipId, ...query }) =>
       runTool(async () => {
-        const { body } = await client.vmcp(
+        const { body } = await client.vm2m(
           `/equipment/${encodePathSegment(equipId)}/excessivedowntimes`,
           { query },
         );
@@ -226,7 +226,7 @@ export function registerEquipmentTools(
     },
     async ({ equipId, shiftHistoryId, statusLogId }) =>
       runTool(async () => {
-        const { body } = await client.vmcp(
+        const { body } = await client.vm2m(
           `/equipment/${encodePathSegment(equipId)}/excessivedowntime`,
           { query: { shiftHistoryId, statusLogId } },
         );

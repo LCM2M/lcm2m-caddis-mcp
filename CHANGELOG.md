@@ -39,21 +39,21 @@ include breaking changes in minor bumps; post-1.0, breaking changes bump major.
 
 ## [0.1.0] - 2026-04-17
 
-Initial release. Wraps the LCM2M Caddis VMCP API as an MCP server for LLM-based tools
+Initial release. Wraps the LCM2M Caddis VM2M API as an MCP server for LLM-based tools
 like Claude Desktop, Claude Code, and Cursor.
 
 ### Added
 
-- **Tool coverage** — one MCP tool per VMCP route across company, devices, equipment
+- **Tool coverage** — one MCP tool per VM2M route across company, devices, equipment
   (and sub-resources: utilization, schedule, cycles, statuslogs, telemetry, shift
   history, excessive-downtime events), org units + tree, alarms, tags, tag groups,
   runs, and status reasons.
-- **`CaddisApiClient`** — dual-API client exposing `vmcp()`, `v1()`, and `v1Json<T>()`
+- **`CaddisApiClient`** — dual-API client exposing `vm2m()`, `v1()`, and `v1Json<T>()`
   over a single shared auth / retry / rate-limit layer. Builds query strings with
   `[]` suffix fan-out for array-valued keys (required by the backend's
   `multiValueQueryStringParameters` handling).
 - **Auto-login with JWT caching** — on first request, POSTs
-  `{username, password, company_id?}` to `/vmcp/sessions`, caches the JWT and its
+  `{username, password, company_id?}` to `/vm2m/sessions`, caches the JWT and its
   decoded `exp`, and proactively re-logs in 30 seconds before expiry. Single-flight
   login dedup prevents parallel requests from triggering multiple logins.
 - **401 re-login retry** — clears the token cache and retries the request once with
@@ -64,11 +64,11 @@ like Claude Desktop, Claude Code, and Cursor.
   tool result when retries exhaust.
 - **Low-remaining rate-limit warnings** — logs to stderr when
   `X-RateLimit-Remaining-{endpoint,user}` drops to ≤ 3 after a successful request.
-- **CSV/YAML body passthrough** — VMCP responses are returned verbatim as `text`
+- **CSV/YAML body passthrough** — VM2M responses are returned verbatim as `text`
   content so token usage stays cheap (CSV for uniform rows, YAML for nested/variable).
 - **Composite-tool seam** — `src/tools/composite/index.ts` provides a registration
-  function for higher-level tools that aren't 1:1 VMCP wrappers and may compose
-  multiple vmcp/v1 calls.
+  function for higher-level tools that aren't 1:1 VM2M wrappers and may compose
+  multiple vm2m/v1 calls.
 - **Configuration via env vars** — `CADDIS_USERNAME`, `CADDIS_PASSWORD`,
   `CADDIS_COMPANY_ID`, `CADDIS_MAX_RETRIES`, `CADDIS_MAX_RETRY_WAIT_MS`.
 - **Distribution paths** — published to npm as `@lcm2m/caddis-mcp` (invocable via

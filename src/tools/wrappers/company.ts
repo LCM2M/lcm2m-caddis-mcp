@@ -22,7 +22,7 @@ export function registerCompanyTools(
     },
     async () =>
       runTool(async () => {
-        const { body } = await client.vmcp('/company');
+        const { body } = await client.vm2m('/company');
         return body;
       }),
   );

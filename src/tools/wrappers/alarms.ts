@@ -32,7 +32,7 @@ export function registerAlarmTools(
     },
     async ({ equipIds, pm }) =>
       runTool(async () => {
-        const { body } = await client.vmcp('/alarms', { query: { equipIds, pm } });
+        const { body } = await client.vm2m('/alarms', { query: { equipIds, pm } });
         return body;
       }),
   );

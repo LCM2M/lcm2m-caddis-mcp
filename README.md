@@ -1,6 +1,6 @@
 # lcm2m-caddis-mcp
 
-An MCP server that exposes the LCM2M Caddis **VMCP API** to LLM tools like Claude
+An MCP server that exposes the LCM2M Caddis **VM2M API** to LLM tools like Claude
 Desktop, Claude Code, and Cursor. Read-only wrappers over equipment, runs, cycles,
 telemetry, alarms, and more — served as CSV/YAML so LLM context stays cheap.
 
@@ -96,7 +96,7 @@ editing config.
 
 ## Available tools
 
-All tools are **read-only** and prefixed with `caddis_`. Each maps 1:1 to a VMCP
+All tools are **read-only** and prefixed with `caddis_`. Each maps 1:1 to a VM2M
 route; responses are CSV (uniform rows) or YAML (nested).
 
 - **Company:** `get_company`
@@ -137,13 +137,13 @@ src/
   tools/
     schemas.ts     # shared zod helpers + runTool error wrapper
     index.ts       # tool registration
-    wrappers/      # 1:1 VMCP route wrappers
+    wrappers/      # 1:1 VM2M route wrappers
     composite/     # higher-level multi-call tools
 ```
 
 ## How it works
 
-- **Auth:** first call hits `POST /vmcp/sessions` → JWT, cached and proactively
+- **Auth:** first call hits `POST /vm2m/sessions` → JWT, cached and proactively
   refreshed 30s before expiry. 401 triggers a single re-login + retry. The
   `Authorization` header carries the raw JWT (no `Bearer` prefix).
 - **Rate limiting:** backend enforces 20 req/10s per endpoint and 60 req/10s per
@@ -163,7 +163,7 @@ src/
   of the numeric IDs listed in the error.
 - **`401 Unauthorized`** — bad creds. Test with:
   ```sh
-  curl -X POST https://api.lcm2m.com/vmcp/sessions \
+  curl -X POST https://api.lcm2m.com/vm2m/sessions \
     -H 'Content-Type: application/json' \
     -d '{"username":"you@example.com","password":"...","company_id":1}'
   ```

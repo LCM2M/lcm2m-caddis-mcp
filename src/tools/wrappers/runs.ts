@@ -26,7 +26,7 @@ export function registerRunTools(
     },
     async ({ equipment_id, start, end }) =>
       runTool(async () => {
-        const { body } = await client.vmcp('/runs', {
+        const { body } = await client.vm2m('/runs', {
           query: { equipment_id, start, end },
         });
         return body;
@@ -45,7 +45,7 @@ export function registerRunTools(
     },
     async ({ runId }) =>
       runTool(async () => {
-        const { body } = await client.vmcp(`/runs/${encodePathSegment(runId)}`);
+        const { body } = await client.vm2m(`/runs/${encodePathSegment(runId)}`);
         return body;
       }),
   );
@@ -64,7 +64,7 @@ export function registerRunTools(
     },
     async ({ runId }) =>
       runTool(async () => {
-        const { body } = await client.vmcp(`/runs/${encodePathSegment(runId)}/cycles`);
+        const { body } = await client.vm2m(`/runs/${encodePathSegment(runId)}/cycles`);
         return body;
       }),
   );

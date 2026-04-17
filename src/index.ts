@@ -13,7 +13,7 @@ async function main(): Promise<void> {
     { name: 'lcm2m-caddis-mcp', version: '0.1.0' },
     {
       instructions:
-        'Read-only access to the LCM2M Caddis VMCP API. Responses are CSV (uniform rows) ' +
+        'Read-only access to the LCM2M Caddis VM2M API. Responses are CSV (uniform rows) ' +
         'or YAML (nested/variable rows) to keep token usage low — parse accordingly.',
     },
   );

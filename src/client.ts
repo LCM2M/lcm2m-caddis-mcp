@@ -3,7 +3,7 @@ import type { Config } from './config.js';
 const EXPIRY_SKEW_MS = 30_000;
 const DEFAULT_TTL_MS = 6 * 24 * 60 * 60 * 1000;
 
-type Prefix = 'vmcp' | 'v1';
+type Prefix = 'vm2m' | 'v1';
 type QueryValue = string | number | boolean | Array<string | number | boolean> | undefined | null;
 
 export interface RequestOpts {
@@ -51,7 +51,7 @@ export class CompanySelectionRequiredError extends Error {
 }
 
 const ACCEPT_HEADERS: Record<Prefix, string> = {
-  vmcp: 'text/csv, text/yaml;q=0.9, */*;q=0.1',
+  vm2m: 'text/csv, text/yaml;q=0.9, */*;q=0.1',
   v1: 'application/json',
 };
 
@@ -67,8 +67,8 @@ export class CaddisApiClient {
     private readonly fetchFn: FetchLike = fetch,
   ) {}
 
-  vmcp(path: string, opts: RequestOpts = {}): Promise<CaddisResponse> {
-    return this.request('vmcp', path, opts);
+  vm2m(path: string, opts: RequestOpts = {}): Promise<CaddisResponse> {
+    return this.request('vm2m', path, opts);
   }
 
   v1(path: string, opts: RequestOpts = {}): Promise<CaddisResponse> {
@@ -169,7 +169,7 @@ export class CaddisApiClient {
     const { username, password, companyId } = this.config;
     if (!username || !password) throw new AuthMissingError();
 
-    const res = await this.fetchFn(`${this.config.apiUrl}/vmcp/sessions`, {
+    const res = await this.fetchFn(`${this.config.apiUrl}/vm2m/sessions`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({

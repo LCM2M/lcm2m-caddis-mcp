@@ -21,7 +21,7 @@ export function registerDeviceTools(
     },
     async () =>
       runTool(async () => {
-        const { body } = await client.vmcp('/devices');
+        const { body } = await client.vm2m('/devices');
         return body;
       }),
   );
@@ -38,7 +38,7 @@ export function registerDeviceTools(
     },
     async ({ deviceId }) =>
       runTool(async () => {
-        const { body } = await client.vmcp(`/devices/${encodePathSegment(deviceId)}`);
+        const { body } = await client.vm2m(`/devices/${encodePathSegment(deviceId)}`);
         return body;
       }),
   );

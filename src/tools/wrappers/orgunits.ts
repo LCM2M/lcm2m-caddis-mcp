@@ -28,7 +28,7 @@ export function registerOrgUnitTools(
     },
     async ({ orgUnitId }) =>
       runTool(async () => {
-        const { body } = await client.vmcp(`/orgunits/${encodePathSegment(orgUnitId)}`);
+        const { body } = await client.vm2m(`/orgunits/${encodePathSegment(orgUnitId)}`);
         return body;
       }),
   );
@@ -46,7 +46,7 @@ export function registerOrgUnitTools(
     },
     async ({ orgUnitId }) =>
       runTool(async () => {
-        const { body } = await client.vmcp(`/orgunits/${encodePathSegment(orgUnitId)}/schedule`);
+        const { body } = await client.vm2m(`/orgunits/${encodePathSegment(orgUnitId)}/schedule`);
         return body;
       }),
   );
@@ -65,7 +65,7 @@ export function registerOrgUnitTools(
     },
     async ({ orgUnitId, ...query }) =>
       runTool(async () => {
-        const { body } = await client.vmcp(
+        const { body } = await client.vm2m(
           `/orgunits/${encodePathSegment(orgUnitId)}/excessivedowntimes`,
           { query },
         );
@@ -92,7 +92,7 @@ export function registerOrgUnitTools(
     async ({ orgUnitId }) =>
       runTool(async () => {
         const path = orgUnitId !== undefined ? `/tree/${encodePathSegment(orgUnitId)}` : '/tree';
-        const { body } = await client.vmcp(path);
+        const { body } = await client.vm2m(path);
         return body;
       }),
   );
