@@ -20,9 +20,6 @@ include breaking changes in minor bumps; post-1.0, breaking changes bump major.
   Per-entry errors (unknown tool, arg validation failure, 5xx, thrown errors) are
   isolated so one failure doesn't sink the batch; `AuthMissingError` and
   `CompanySelectionRequiredError` still surface top-level.
-- **`CADDIS_BATCH_CONCURRENCY`** env var — caps in-flight requests within a batch
-  (default 5, clamp 1–10). Backend is 60 req/10s/user, so 5 leaves headroom for
-  429 retries inside each entry.
 - **`ToolHandlerRegistry`** (`src/tools/registry.ts`) — internal registry that
   stores each tool's compiled zod input schema and handler alongside the SDK's
   own registration, so `caddis_batch` can look up handlers by name and validate
@@ -72,9 +69,8 @@ like Claude Desktop, Claude Code, and Cursor.
 - **Composite-tool seam** — `src/tools/composite/index.ts` provides a registration
   function for higher-level tools that aren't 1:1 VMCP wrappers and may compose
   multiple vmcp/v1 calls.
-- **Configuration via env vars** — `CADDIS_API_URL`, `CADDIS_USERNAME`,
-  `CADDIS_PASSWORD`, `CADDIS_COMPANY_ID`, `CADDIS_MAX_RETRIES`,
-  `CADDIS_MAX_RETRY_WAIT_MS`.
+- **Configuration via env vars** — `CADDIS_USERNAME`, `CADDIS_PASSWORD`,
+  `CADDIS_COMPANY_ID`, `CADDIS_MAX_RETRIES`, `CADDIS_MAX_RETRY_WAIT_MS`.
 - **Distribution paths** — published to npm as `@lcm2m/caddis-mcp` (invocable via
   `npx -y @lcm2m/caddis-mcp`). Multi-stage `Dockerfile` produces a slim Node 25
   runtime image; `npm run docker:build` is the shortcut.

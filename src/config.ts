@@ -11,7 +11,7 @@ const ConfigSchema = z.object({
   companyId: z.coerce.number().int().positive().optional(),
   maxRetries: z.coerce.number().int().min(0).max(10).default(3),
   maxRetryWaitMs: z.coerce.number().int().min(0).max(300_000).default(30_000),
-  batchConcurrency: z.coerce.number().int().min(1).max(10).default(5),
+  batchConcurrency: z.coerce.number().int().min(1).max(5).default(1),
 });
 
 export type Config = z.infer<typeof ConfigSchema>;

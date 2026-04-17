@@ -17,7 +17,6 @@ telemetry, alarms, and more — served as CSV/YAML so LLM context stays cheap.
 | `CADDIS_USERNAME` | *(required)* | LCM2M account username/email |
 | `CADDIS_PASSWORD` | *(required)* | LCM2M account password |
 | `CADDIS_COMPANY_ID` | *(auto)* | Required if your user belongs to multiple companies |
-| `CADDIS_API_URL` | `https://api.lcm2m.com` | Override for local/staging backends |
 | `CADDIS_MAX_RETRIES` | `3` | Max 429 retries per request |
 | `CADDIS_MAX_RETRY_WAIT_MS` | `30000` | Max total wait budget per request |
 
@@ -116,7 +115,7 @@ route; responses are CSV (uniform rows) or YAML (nested).
 ## Development
 
 ```sh
-cp .env.example .env.local  # fill in creds
+# Create .env.local with CADDIS_USERNAME and CADDIS_PASSWORD (gitignored).
 npm install
 npm run dev                 # MCP Inspector web UI + tsx
 npm test                    # node --test via tsx
@@ -162,7 +161,7 @@ src/
   shell.
 - **`This user belongs to multiple companies…`** — set `CADDIS_COMPANY_ID` to one
   of the numeric IDs listed in the error.
-- **`401 Unauthorized`** — bad creds or wrong `CADDIS_API_URL`. Test with:
+- **`401 Unauthorized`** — bad creds. Test with:
   ```sh
   curl -X POST https://api.lcm2m.com/vmcp/sessions \
     -H 'Content-Type: application/json' \
