@@ -8,6 +8,38 @@ include breaking changes in minor bumps; post-1.0, breaking changes bump major.
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-04-17
+
+### Added
+
+- **`caddis_batch` tool** — run up to 20 other `caddis_*` tools in a single call,
+  fanned out in parallel. Each request is dispatched to the same handler the tool
+  would run individually, so existing auth, 429 retry/jitter, and single-flight
+  login behavior applies per request with no duplication. Response is one text
+  block per request, in input order, prefixed with `#<index> <tool> <ok|error>`.
+  Per-entry errors (unknown tool, arg validation failure, 5xx, thrown errors) are
+  isolated so one failure doesn't sink the batch; `AuthMissingError` and
+  `CompanySelectionRequiredError` still surface top-level.
+- **`CADDIS_BATCH_CONCURRENCY`** env var — caps in-flight requests within a batch
+  (default 5, clamp 1–10). Backend is 60 req/10s/user, so 5 leaves headroom for
+  429 retries inside each entry.
+- **`ToolHandlerRegistry`** (`src/tools/registry.ts`) — internal registry that
+  stores each tool's compiled zod input schema and handler alongside the SDK's
+  own registration, so `caddis_batch` can look up handlers by name and validate
+  args per entry. Paired with a lightweight inline semaphore (`createLimiter`)
+  kept in the same module — no new runtime dependencies.
+
+### Changed
+
+- Each `register*Tools(server, client)` function now takes a `ToolHandlerRegistry`
+  as a third argument and registers through a new `registerTool` helper that
+  populates both the SDK and the registry at once. Internal refactor; no change
+  to the public tool surface.
+- Test suite grew to 61 tests with dedicated coverage for the registry,
+  concurrency limiter, and batch dispatch (unknown tool, validation failure,
+  per-entry 5xx isolation, concurrency cap, batch size limits, nested-batch
+  rejection, credential-error propagation).
+
 ## [0.1.0] - 2026-04-17
 
 Initial release. Wraps the LCM2M Caddis VMCP API as an MCP server for LLM-based tools
@@ -52,5 +84,6 @@ like Claude Desktop, Claude Code, and Cursor.
   login + cache, 401 re-login, 429 retry / exhaust / budget-cap, concurrent login
   dedup, JWT expiry, `CompanySelectionRequiredError`, and body passthrough.
 
-[Unreleased]: https://github.com/LCM2M/lcm2m-caddis-mcp/compare/v0.1.0...HEAD
+[Unreleased]: https://github.com/LCM2M/lcm2m-caddis-mcp/compare/v0.2.0...HEAD
+[0.2.0]: https://github.com/LCM2M/lcm2m-caddis-mcp/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/LCM2M/lcm2m-caddis-mcp/releases/tag/v0.1.0
