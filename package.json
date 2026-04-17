@@ -1,8 +1,9 @@
 {
-  "name": "lcm2m-caddis-mcp",
+  "name": "@lcm2m/caddis-mcp",
   "version": "0.1.0",
   "description": "MCP server for the LCM2M Caddis VMCP API",
-  "private": true,
+  "license": "MIT",
+  "author": "LCM2M",
   "type": "module",
   "repository": {
     "type": "git",
@@ -12,14 +13,24 @@
     "url": "https://github.com/LCM2M/lcm2m-caddis-mcp/issues"
   },
   "homepage": "https://github.com/LCM2M/lcm2m-caddis-mcp#readme",
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "lcm2m",
+    "caddis",
+    "llm",
+    "claude",
+    "anthropic"
+  ],
   "bin": {
-    "lcm2m-caddis-mcp": "./dist/index.js"
+    "caddis-mcp": "./dist/index.js"
   },
   "files": [
-    "dist"
+    "dist",
+    "CHANGELOG.md"
   ],
   "scripts": {
-    "build": "tsc",
+    "build": "tsc -p tsconfig.build.json",
     "dev": "mcp-inspector tsx --env-file=.env.local src/index.ts",
     "start": "node dist/index.js",
     "test": "tsx --test src/client.test.ts src/tools/schemas.test.ts",
@@ -27,7 +38,13 @@
     "lint": "biome check .",
     "lint:fix": "biome check --write .",
     "format": "biome format --write .",
-    "docker:build": "docker build --target runtime -t lcm2m-caddis-mcp ."
+    "docker:build": "docker build --target runtime -t lcm2m-caddis-mcp .",
+    "preversion": "npm run typecheck && npm run lint && npm test",
+    "postversion": "git push --follow-tags",
+    "prepublishOnly": "npm run typecheck && npm run lint && npm test && npm run build",
+    "release:patch": "npm version patch && npm publish",
+    "release:minor": "npm version minor && npm publish",
+    "release:major": "npm version major && npm publish"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.29.0",

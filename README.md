@@ -30,7 +30,7 @@ client's config.
 ### npx (recommended, once published)
 
 ```sh
-npx -y lcm2m-caddis-mcp
+npx -y @lcm2m/caddis-mcp
 ```
 
 > Not yet on npm. Use Docker or local source until it is.
@@ -69,7 +69,7 @@ claude mcp add caddis \
   --env CADDIS_USERNAME=you@example.com \
   --env CADDIS_PASSWORD='your-password' \
   --env CADDIS_COMPANY_ID=1 \
-  -- npx -y lcm2m-caddis-mcp
+  -- npx -y @lcm2m/caddis-mcp
 ```
 
 ### Claude Desktop / Cursor
@@ -81,7 +81,7 @@ Edit `claude_desktop_config.json` (Claude Desktop) or `.cursor/mcp.json` (Cursor
   "mcpServers": {
     "caddis": {
       "command": "npx",
-      "args": ["-y", "lcm2m-caddis-mcp"],
+      "args": ["-y", "@lcm2m/caddis-mcp"],
       "env": {
         "CADDIS_USERNAME": "you@example.com",
         "CADDIS_PASSWORD": "your-password",
