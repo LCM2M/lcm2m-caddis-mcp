@@ -1,6 +1,7 @@
 import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { z } from 'zod';
 import type { CaddisApiClient } from '../../client.js';
+import { registerTool, type ToolHandlerRegistry } from '../registry.js';
 import {
   encodePathSegment,
   idParam,
@@ -10,8 +11,14 @@ import {
   timeWindowRequiredStart,
 } from '../schemas.js';
 
-export function registerEquipmentTools(server: McpServer, client: CaddisApiClient): void {
-  server.registerTool(
+export function registerEquipmentTools(
+  server: McpServer,
+  client: CaddisApiClient,
+  registry: ToolHandlerRegistry,
+): void {
+  registerTool(
+    server,
+    registry,
     'caddis_list_equipment',
     {
       title: 'List equipment',
@@ -28,7 +35,9 @@ export function registerEquipmentTools(server: McpServer, client: CaddisApiClien
       }),
   );
 
-  server.registerTool(
+  registerTool(
+    server,
+    registry,
     'caddis_get_equipment',
     {
       title: 'Get one piece of equipment',
@@ -43,7 +52,9 @@ export function registerEquipmentTools(server: McpServer, client: CaddisApiClien
       }),
   );
 
-  server.registerTool(
+  registerTool(
+    server,
+    registry,
     'caddis_get_equipment_utilization',
     {
       title: 'Equipment utilization over time',
@@ -71,7 +82,9 @@ export function registerEquipmentTools(server: McpServer, client: CaddisApiClien
       }),
   );
 
-  server.registerTool(
+  registerTool(
+    server,
+    registry,
     'caddis_get_equipment_schedule',
     {
       title: 'Equipment schedule',
@@ -88,7 +101,9 @@ export function registerEquipmentTools(server: McpServer, client: CaddisApiClien
       }),
   );
 
-  server.registerTool(
+  registerTool(
+    server,
+    registry,
     'caddis_get_equipment_cycles',
     {
       title: 'Equipment production cycles',
@@ -107,7 +122,9 @@ export function registerEquipmentTools(server: McpServer, client: CaddisApiClien
       }),
   );
 
-  server.registerTool(
+  registerTool(
+    server,
+    registry,
     'caddis_get_equipment_statuslogs',
     {
       title: 'Equipment status logs',
@@ -126,7 +143,9 @@ export function registerEquipmentTools(server: McpServer, client: CaddisApiClien
       }),
   );
 
-  server.registerTool(
+  registerTool(
+    server,
+    registry,
     'caddis_get_equipment_telemetry',
     {
       title: 'Equipment telemetry data points',
@@ -145,7 +164,9 @@ export function registerEquipmentTools(server: McpServer, client: CaddisApiClien
       }),
   );
 
-  server.registerTool(
+  registerTool(
+    server,
+    registry,
     'caddis_get_equipment_shift_history',
     {
       title: 'Equipment shift history',
@@ -165,7 +186,9 @@ export function registerEquipmentTools(server: McpServer, client: CaddisApiClien
       }),
   );
 
-  server.registerTool(
+  registerTool(
+    server,
+    registry,
     'caddis_list_equipment_excessive_downtimes',
     {
       title: 'Excessive downtime events for equipment',
@@ -185,7 +208,9 @@ export function registerEquipmentTools(server: McpServer, client: CaddisApiClien
       }),
   );
 
-  server.registerTool(
+  registerTool(
+    server,
+    registry,
     'caddis_get_equipment_excessive_downtime',
     {
       title: 'One excessive downtime event',

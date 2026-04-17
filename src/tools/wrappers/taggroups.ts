@@ -1,9 +1,16 @@
 import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import type { CaddisApiClient } from '../../client.js';
+import { registerTool, type ToolHandlerRegistry } from '../registry.js';
 import { encodePathSegment, idParam, readOnlyAnnotations, runTool } from '../schemas.js';
 
-export function registerTagGroupTools(server: McpServer, client: CaddisApiClient): void {
-  server.registerTool(
+export function registerTagGroupTools(
+  server: McpServer,
+  client: CaddisApiClient,
+  registry: ToolHandlerRegistry,
+): void {
+  registerTool(
+    server,
+    registry,
     'caddis_list_tag_groups',
     {
       title: 'List tag groups',
@@ -18,7 +25,9 @@ export function registerTagGroupTools(server: McpServer, client: CaddisApiClient
       }),
   );
 
-  server.registerTool(
+  registerTool(
+    server,
+    registry,
     'caddis_get_tag_group',
     {
       title: 'Get one tag group',

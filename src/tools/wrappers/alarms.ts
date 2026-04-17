@@ -1,10 +1,17 @@
 import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { z } from 'zod';
 import type { CaddisApiClient } from '../../client.js';
+import { registerTool, type ToolHandlerRegistry } from '../registry.js';
 import { idParam, readOnlyAnnotations, runTool } from '../schemas.js';
 
-export function registerAlarmTools(server: McpServer, client: CaddisApiClient): void {
-  server.registerTool(
+export function registerAlarmTools(
+  server: McpServer,
+  client: CaddisApiClient,
+  registry: ToolHandlerRegistry,
+): void {
+  registerTool(
+    server,
+    registry,
     'caddis_list_alarms',
     {
       title: 'List alarms',

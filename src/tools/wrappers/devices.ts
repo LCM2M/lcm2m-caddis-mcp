@@ -1,9 +1,16 @@
 import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import type { CaddisApiClient } from '../../client.js';
+import { registerTool, type ToolHandlerRegistry } from '../registry.js';
 import { encodePathSegment, idParam, readOnlyAnnotations, runTool } from '../schemas.js';
 
-export function registerDeviceTools(server: McpServer, client: CaddisApiClient): void {
-  server.registerTool(
+export function registerDeviceTools(
+  server: McpServer,
+  client: CaddisApiClient,
+  registry: ToolHandlerRegistry,
+): void {
+  registerTool(
+    server,
+    registry,
     'caddis_list_devices',
     {
       title: 'List devices',
@@ -19,7 +26,9 @@ export function registerDeviceTools(server: McpServer, client: CaddisApiClient):
       }),
   );
 
-  server.registerTool(
+  registerTool(
+    server,
+    registry,
     'caddis_get_device',
     {
       title: 'Get one device',

@@ -1,5 +1,6 @@
 import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import type { CaddisApiClient } from '../../client.js';
+import { registerTool, type ToolHandlerRegistry } from '../registry.js';
 import {
   encodePathSegment,
   idParam,
@@ -8,8 +9,14 @@ import {
   timeWindowRequired,
 } from '../schemas.js';
 
-export function registerOrgUnitTools(server: McpServer, client: CaddisApiClient): void {
-  server.registerTool(
+export function registerOrgUnitTools(
+  server: McpServer,
+  client: CaddisApiClient,
+  registry: ToolHandlerRegistry,
+): void {
+  registerTool(
+    server,
+    registry,
     'caddis_get_org_unit',
     {
       title: 'Get one org unit',
@@ -26,7 +33,9 @@ export function registerOrgUnitTools(server: McpServer, client: CaddisApiClient)
       }),
   );
 
-  server.registerTool(
+  registerTool(
+    server,
+    registry,
     'caddis_get_org_unit_schedule',
     {
       title: 'Org unit schedule',
@@ -42,7 +51,9 @@ export function registerOrgUnitTools(server: McpServer, client: CaddisApiClient)
       }),
   );
 
-  server.registerTool(
+  registerTool(
+    server,
+    registry,
     'caddis_list_org_unit_excessive_downtimes',
     {
       title: 'Excessive downtimes under an org unit',
@@ -62,7 +73,9 @@ export function registerOrgUnitTools(server: McpServer, client: CaddisApiClient)
       }),
   );
 
-  server.registerTool(
+  registerTool(
+    server,
+    registry,
     'caddis_get_tree',
     {
       title: 'Get the org unit / equipment tree',

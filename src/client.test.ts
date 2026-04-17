@@ -150,6 +150,7 @@ const baseConfig: Config = {
   companyId: 1,
   maxRetries: 3,
   maxRetryWaitMs: 30_000,
+  batchConcurrency: 5,
 };
 
 interface MockCall {

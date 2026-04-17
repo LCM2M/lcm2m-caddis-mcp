@@ -33,7 +33,7 @@
     "build": "tsc -p tsconfig.build.json",
     "dev": "mcp-inspector tsx --env-file=.env.local src/index.ts",
     "start": "node dist/index.js",
-    "test": "tsx --test src/client.test.ts src/tools/schemas.test.ts",
+    "test": "tsx --test src/client.test.ts src/tools/schemas.test.ts src/tools/registry.test.ts src/tools/composite/batch.test.ts",
     "typecheck": "tsc --noEmit",
     "lint": "biome check .",
     "lint:fix": "biome check --write .",
