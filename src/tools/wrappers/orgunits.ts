@@ -1,4 +1,5 @@
 import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
+import { z } from 'zod';
 import type { CaddisApiClient } from '../../client.js';
 import { registerTool, type ToolHandlerRegistry } from '../registry.js';
 import {
@@ -7,6 +8,7 @@ import {
   readOnlyAnnotations,
   runTool,
   timeWindowRequired,
+  timeWindowRequiredStart,
 } from '../schemas.js';
 
 export function registerOrgUnitTools(
@@ -47,6 +49,38 @@ export function registerOrgUnitTools(
     async ({ orgUnitId }) =>
       runTool(async () => {
         const { body } = await client.vm2m(`/orgunits/${encodePathSegment(orgUnitId)}/schedule`);
+        return body;
+      }),
+  );
+
+  registerTool(
+    server,
+    registry,
+    'caddis_get_org_unit_utilization',
+    {
+      title: 'Org unit utilization over time',
+      description:
+        'Utilization metrics aggregated across every piece of equipment under an org unit. ' +
+        "Buckets the running/down seconds into intervals (default '1d') over the requested window " +
+        "in the given timezone (default 'UTC'). Returns one entry per bucket.",
+      inputSchema: {
+        orgUnitId: idParam,
+        start: timeWindowRequiredStart.start,
+        end: timeWindowRequiredStart.end,
+        interval: z
+          .string()
+          .optional()
+          .describe("Bucket interval, e.g. '1h', '1d', '1w' (default '1d')"),
+        tz: z.string().optional().describe("IANA timezone, e.g. 'America/Denver' (default 'UTC')"),
+      },
+      annotations: readOnlyAnnotations,
+    },
+    async ({ orgUnitId, ...query }) =>
+      runTool(async () => {
+        const { body } = await client.vm2m(
+          `/orgunits/${encodePathSegment(orgUnitId)}/utilization`,
+          { query },
+        );
         return body;
       }),
   );

@@ -8,6 +8,13 @@ include breaking changes in minor bumps; post-1.0, breaking changes bump major.
 
 ## [Unreleased]
 
+### Added
+
+- **`caddis_get_org_unit_utilization`** — utilization metrics aggregated across every
+  piece of equipment under an org unit, bucketed into intervals. Mirrors
+  `caddis_get_equipment_utilization` for the corresponding `/orgunits/{id}/utilization`
+  route.
+
 ## [0.2.0] - 2026-04-17
 
 ### Added
