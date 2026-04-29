@@ -24,7 +24,7 @@ export function registerEquipmentTools(
       title: 'List equipment',
       description:
         'List all equipment visible to the authenticated user in the active company. ' +
-        'Each row includes the equipment\'s current status (running/down). ' +
+        "Each row includes the equipment's current status (running/down). " +
         'Returns CSV when rows have uniform shape, otherwise YAML.',
       inputSchema: {},
       annotations: readOnlyAnnotations,
@@ -44,7 +44,7 @@ export function registerEquipmentTools(
       title: 'Get one piece of equipment',
       description:
         'Fetch a single equipment record by its ID. ' +
-        'Includes the equipment\'s current status (running/down).',
+        "Includes the equipment's current status (running/down).",
       inputSchema: { equipId: idParam },
       annotations: readOnlyAnnotations,
     },
