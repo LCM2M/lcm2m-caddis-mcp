@@ -260,7 +260,7 @@ describe('CaddisApiClient — 401 one-shot re-login', () => {
 
     const res = await client.vm2m('/equipment');
 
-    assert.equal(res.body, 'equipment csv');
+    assert.equal(res.body, '```toon\nequipment csv\n```');
     assert.equal(mock.calls.length, 4);
     assert.equal(headerOf(at(mock.calls, 3), 'Authorization'), jwt2);
   });
@@ -277,7 +277,7 @@ describe('CaddisApiClient — 429 retry loop', () => {
     const client = new CaddisApiClient(baseConfig, mock.fn);
 
     const res = await client.vm2m('/equipment');
-    assert.equal(res.body, 'success');
+    assert.equal(res.body, '```toon\nsuccess\n```');
     assert.equal(mock.calls.length, 3);
   });
 
@@ -394,7 +394,7 @@ describe('CaddisApiClient — body passthrough', () => {
     const client = new CaddisApiClient(baseConfig, mock.fn);
 
     const res = await client.vm2m('/equipment');
-    assert.equal(res.body, 'id,name\n1,foo');
+    assert.equal(res.body, '```toon\nid,name\n1,foo\n```');
     assert.equal(res.contentType, 'text/csv');
   });
 

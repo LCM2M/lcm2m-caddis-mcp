@@ -25,7 +25,7 @@ export const timeWindowRequiredStart = {
     .max(50_000)
     .optional()
     .describe(
-      'Max rows to return (backend default 5000). Keep modest to avoid token-blowing large CSV bodies.',
+      'Max rows to return (backend default 5000). Keep modest to avoid token-blowing large response bodies.',
     ),
 };
 
@@ -40,6 +40,32 @@ export const readOnlyAnnotations = {
   idempotentHint: true,
   openWorldHint: true,
 } as const;
+
+export const TOON_PRIMER =
+  'Responses are TOON-encoded (toonformat.dev) — a token-efficient JSON dialect ' +
+  'mixing YAML-style indentation with CSV-style tables. Example:\n' +
+  '\n' +
+  '  name: Caddis Co\n' +
+  '  timezone: America/Denver\n' +
+  '  equipment[3]{id,name,tags,current_status.status,current_status.reason_id}:\n' +
+  '    1,Mill A,"[\\"cnc\\",\\"critical\\"]",running,null\n' +
+  '    2,"Press, Big",null,down,3\n' +
+  '    3,Lathe C,null,null,null\n' +
+  '\n' +
+  '- Object fields: `key: value`; nested objects indent their children.\n' +
+  '- Uniform arrays of objects: `field[N]{cols}:` followed by N indented ' +
+  'comma-separated rows in column order.\n' +
+  '- Nested objects inside table rows are recursively flattened to dotted ' +
+  'columns (e.g. `current_status.status`, `input_setup.cycle.logic`); a null ' +
+  'parent yields `null` across all its dotted columns (see row 3 above).\n' +
+  '- Primitive arrays at object level: `field[N]: a,b,c` inline.\n' +
+  '- Arrays inside table cells are JSON-stringified into a single cell value ' +
+  '(`JSON.parse()` to recover); empty arrays render as `null` (see rows 1–3 ' +
+  '`tags` column).\n' +
+  '- Strings with commas/colons/quotes/leading whitespace are double-quoted ' +
+  '(escapes: `\\\\`, `\\"`); other strings, numbers, booleans, and `null` are bare.';
+
+export const toonDesc = (description: string): string => `${description}\n\n${TOON_PRIMER}`;
 
 export const encodePathSegment = (v: string | number): string => encodeURIComponent(String(v));
 

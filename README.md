@@ -2,7 +2,8 @@
 
 An MCP server that exposes the LCM2M Caddis **VM2M API** to LLM tools like Claude
 Desktop, Claude Code, and Cursor. Read-only wrappers over equipment, runs, cycles,
-telemetry, alarms, and more — served as CSV/YAML so LLM context stays cheap.
+telemetry, alarms, and more — served as [TOON](https://toonformat.dev/) so LLM
+context stays cheap.
 
 ## Requirements
 
@@ -63,7 +64,8 @@ Restart the client after editing config.
 ## Available tools
 
 All tools are **read-only** and prefixed with `caddis_`. Each maps 1:1 to a VM2M
-route; responses are CSV (uniform rows) or YAML (nested).
+route; responses are [TOON](https://toonformat.dev/)-encoded (a compact,
+JSON-equivalent format mixing YAML-style nesting with CSV-style tables).
 
 - **Company:** `get_company`
 - **Devices:** `list_devices`, `get_device`
@@ -135,8 +137,10 @@ Command string: `node /absolute/path/to/lcm2m-caddis-mcp/dist/index.js`
 - **Rate limiting:** backend enforces 20 req/10s per endpoint and 60 req/10s per
   user. On 429, the client parses `Retry-After`, applies ±20% jitter, and retries
   up to `CADDIS_MAX_RETRIES` (capped by `CADDIS_MAX_RETRY_WAIT_MS`).
-- **Response format:** CSV when rows are uniform, YAML otherwise. The raw body is
-  passed through — ~3× cheaper in tokens than equivalent JSON.
+- **Response format:** [TOON](https://toonformat.dev/) — a token-efficient JSON
+  dialect that mixes YAML-style nesting with CSV-style tables (~40% fewer tokens
+  than JSON). The raw body is passed through, fenced as ` ```toon ... ``` ` so
+  the model sees an unambiguous format boundary.
 - **Errors:** 4xx responses surface as `isError: true` tool results so the LLM can
   see the backend error body and recover; 5xx rethrow.
 

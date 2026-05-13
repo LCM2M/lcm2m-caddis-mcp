@@ -2,7 +2,7 @@ import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { z } from 'zod';
 import type { CaddisApiClient } from '../../client.js';
 import { registerTool, type ToolHandlerRegistry } from '../registry.js';
-import { encodePathSegment, idParam, readOnlyAnnotations, runTool } from '../schemas.js';
+import { encodePathSegment, idParam, readOnlyAnnotations, runTool, toonDesc } from '../schemas.js';
 
 export function registerTagTools(
   server: McpServer,
@@ -15,8 +15,9 @@ export function registerTagTools(
     'caddis_list_tags',
     {
       title: 'List cycle tags',
-      description:
+      description: toonDesc(
         'List cycle tags for the company. Optionally filter by active state or by tag group.',
+      ),
       inputSchema: {
         active: z
           .boolean()
@@ -39,7 +40,7 @@ export function registerTagTools(
     'caddis_get_tag',
     {
       title: 'Get one cycle tag',
-      description: 'Fetch a single cycle tag by ID.',
+      description: toonDesc('Fetch a single cycle tag by ID.'),
       inputSchema: { tagId: idParam },
       annotations: readOnlyAnnotations,
     },

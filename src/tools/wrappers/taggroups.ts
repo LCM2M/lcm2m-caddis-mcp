@@ -1,7 +1,7 @@
 import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import type { CaddisApiClient } from '../../client.js';
 import { registerTool, type ToolHandlerRegistry } from '../registry.js';
-import { encodePathSegment, idParam, readOnlyAnnotations, runTool } from '../schemas.js';
+import { encodePathSegment, idParam, readOnlyAnnotations, runTool, toonDesc } from '../schemas.js';
 
 export function registerTagGroupTools(
   server: McpServer,
@@ -14,7 +14,7 @@ export function registerTagGroupTools(
     'caddis_list_tag_groups',
     {
       title: 'List tag groups',
-      description: 'List all cycle tag groups for the company.',
+      description: toonDesc('List all cycle tag groups for the company.'),
       inputSchema: {},
       annotations: readOnlyAnnotations,
     },
@@ -31,7 +31,7 @@ export function registerTagGroupTools(
     'caddis_get_tag_group',
     {
       title: 'Get one tag group',
-      description: 'Fetch a single tag group by ID.',
+      description: toonDesc('Fetch a single tag group by ID.'),
       inputSchema: { tagGroupId: idParam },
       annotations: readOnlyAnnotations,
     },

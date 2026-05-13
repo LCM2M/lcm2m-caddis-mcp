@@ -1,7 +1,14 @@
 import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import type { CaddisApiClient } from '../../client.js';
 import { registerTool, type ToolHandlerRegistry } from '../registry.js';
-import { encodePathSegment, idParam, isoDate, readOnlyAnnotations, runTool } from '../schemas.js';
+import {
+  encodePathSegment,
+  idParam,
+  isoDate,
+  readOnlyAnnotations,
+  runTool,
+  toonDesc,
+} from '../schemas.js';
 
 export function registerRunTools(
   server: McpServer,
@@ -14,9 +21,10 @@ export function registerRunTools(
     'caddis_list_runs',
     {
       title: 'List production runs',
-      description:
+      description: toonDesc(
         'List production runs for the company. Optionally filter by equipment and/or a date range ' +
-        '(runs whose active interval intersects [start, end)).',
+          '(runs whose active interval intersects [start, end)).',
+      ),
       inputSchema: {
         equipment_id: idParam.optional().describe('Filter to runs for a specific equipment ID'),
         start: isoDate.optional().describe('ISO 8601 lower bound (optional)'),
@@ -39,7 +47,7 @@ export function registerRunTools(
     'caddis_get_run',
     {
       title: 'Get one run',
-      description: 'Fetch a single production run by ID, including its equipment.',
+      description: toonDesc('Fetch a single production run by ID, including its equipment.'),
       inputSchema: { runId: idParam },
       annotations: readOnlyAnnotations,
     },
@@ -56,9 +64,10 @@ export function registerRunTools(
     'caddis_get_run_cycles',
     {
       title: 'Production cycles for a run',
-      description:
+      description: toonDesc(
         'All production cycles associated with a specific run. Use this instead of ' +
-        'caddis_get_equipment_cycles when the scope is a known run.',
+          'caddis_get_equipment_cycles when the scope is a known run.',
+      ),
       inputSchema: { runId: idParam },
       annotations: readOnlyAnnotations,
     },

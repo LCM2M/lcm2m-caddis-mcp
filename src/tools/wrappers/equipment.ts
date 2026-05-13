@@ -9,6 +9,7 @@ import {
   runTool,
   timeWindowRequired,
   timeWindowRequiredStart,
+  toonDesc,
 } from '../schemas.js';
 
 export function registerEquipmentTools(
@@ -22,10 +23,10 @@ export function registerEquipmentTools(
     'caddis_list_equipment',
     {
       title: 'List equipment',
-      description:
+      description: toonDesc(
         'List all equipment visible to the authenticated user in the active company. ' +
-        "Each row includes the equipment's current status (running/down). " +
-        'Returns CSV when rows have uniform shape, otherwise YAML.',
+          "Each row includes the equipment's current status (running/down).",
+      ),
       inputSchema: {},
       annotations: readOnlyAnnotations,
     },
@@ -42,9 +43,10 @@ export function registerEquipmentTools(
     'caddis_get_equipment',
     {
       title: 'Get one piece of equipment',
-      description:
+      description: toonDesc(
         'Fetch a single equipment record by its ID. ' +
-        "Includes the equipment's current status (running/down).",
+          "Includes the equipment's current status (running/down).",
+      ),
       inputSchema: { equipId: idParam },
       annotations: readOnlyAnnotations,
     },
@@ -61,9 +63,10 @@ export function registerEquipmentTools(
     'caddis_get_equipment_utilization',
     {
       title: 'Equipment utilization over time',
-      description:
+      description: toonDesc(
         'Grouped utilization metrics for a piece of equipment. Buckets the running/down seconds ' +
-        "into intervals (default '1d') over the requested window in the given timezone (default 'UTC').",
+          "into intervals (default '1d') over the requested window in the given timezone (default 'UTC').",
+      ),
       inputSchema: {
         equipId: idParam,
         start: timeWindowRequiredStart.start,
@@ -91,9 +94,10 @@ export function registerEquipmentTools(
     'caddis_get_equipment_schedule',
     {
       title: 'Equipment schedule',
-      description:
+      description: toonDesc(
         'Current schedule for a piece of equipment, including where the schedule was inherited from ' +
-        '(equipment vs org unit vs company) and the resolved timezone.',
+          '(equipment vs org unit vs company) and the resolved timezone.',
+      ),
       inputSchema: { equipId: idParam },
       annotations: readOnlyAnnotations,
     },
@@ -110,9 +114,10 @@ export function registerEquipmentTools(
     'caddis_get_equipment_cycles',
     {
       title: 'Equipment production cycles',
-      description:
+      description: toonDesc(
         'Production cycles (individual part/unit runs) for a piece of equipment within a time window. ' +
-        'Keep windows and limits modest — cycle counts can be very high.',
+          'Keep windows and limits modest — cycle counts can be very high.',
+      ),
       inputSchema: { equipId: idParam, ...timeWindowRequiredStart },
       annotations: readOnlyAnnotations,
     },
@@ -131,9 +136,10 @@ export function registerEquipmentTools(
     'caddis_get_equipment_statuslogs',
     {
       title: 'Equipment status logs',
-      description:
+      description: toonDesc(
         'Running/down status log transitions for a piece of equipment within a time window. ' +
-        'Each row is a status change; pair with statusreasons to decode reason IDs.',
+          'Each row is a status change; pair with statusreasons to decode reason IDs.',
+      ),
       inputSchema: { equipId: idParam, ...timeWindowRequiredStart },
       annotations: readOnlyAnnotations,
     },
@@ -152,9 +158,10 @@ export function registerEquipmentTools(
     'caddis_get_equipment_telemetry',
     {
       title: 'Equipment telemetry data points',
-      description:
+      description: toonDesc(
         'Raw telemetry data points for a piece of equipment within a time window. ' +
-        'Very chatty — always scope with a tight window and limit.',
+          'Very chatty — always scope with a tight window and limit.',
+      ),
       inputSchema: { equipId: idParam, ...timeWindowRequiredStart },
       annotations: readOnlyAnnotations,
     },
@@ -173,9 +180,10 @@ export function registerEquipmentTools(
     'caddis_get_equipment_shift_history',
     {
       title: 'Equipment shift history',
-      description:
+      description: toonDesc(
         'Historical shift boundaries (start/end, scheduled/worked) for a piece of equipment. ' +
-        'Both start and end are required — this is a closed-window query.',
+          'Both start and end are required — this is a closed-window query.',
+      ),
       inputSchema: { equipId: idParam, ...timeWindowRequired },
       annotations: readOnlyAnnotations,
     },
@@ -195,9 +203,10 @@ export function registerEquipmentTools(
     'caddis_list_equipment_excessive_downtimes',
     {
       title: 'Excessive downtime events for equipment',
-      description:
+      description: toonDesc(
         'List shifts where a piece of equipment had excessive downtime (XSF) events. ' +
-        'Both start and end are required.',
+          'Both start and end are required.',
+      ),
       inputSchema: { equipId: idParam, ...timeWindowRequired },
       annotations: readOnlyAnnotations,
     },
@@ -217,9 +226,10 @@ export function registerEquipmentTools(
     'caddis_get_equipment_excessive_downtime',
     {
       title: 'One excessive downtime event',
-      description:
+      description: toonDesc(
         'Fetch a single excessive downtime record (with operator-assigned reason, if any) ' +
-        'identified by the shift history + status log pair for a piece of equipment.',
+          'identified by the shift history + status log pair for a piece of equipment.',
+      ),
       inputSchema: {
         equipId: idParam,
         shiftHistoryId: idParam.describe('Shift history ID for the event'),

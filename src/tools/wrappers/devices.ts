@@ -1,7 +1,7 @@
 import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import type { CaddisApiClient } from '../../client.js';
 import { registerTool, type ToolHandlerRegistry } from '../registry.js';
-import { encodePathSegment, idParam, readOnlyAnnotations, runTool } from '../schemas.js';
+import { encodePathSegment, idParam, readOnlyAnnotations, runTool, toonDesc } from '../schemas.js';
 
 export function registerDeviceTools(
   server: McpServer,
@@ -14,8 +14,9 @@ export function registerDeviceTools(
     'caddis_list_devices',
     {
       title: 'List devices',
-      description:
+      description: toonDesc(
         'List all physical Caddis devices registered to the company, with their assigned equipment.',
+      ),
       inputSchema: {},
       annotations: readOnlyAnnotations,
     },
@@ -32,7 +33,9 @@ export function registerDeviceTools(
     'caddis_get_device',
     {
       title: 'Get one device',
-      description: 'Fetch a single Caddis device by ID, including its attached equipment.',
+      description: toonDesc(
+        'Fetch a single Caddis device by ID, including its attached equipment.',
+      ),
       inputSchema: { deviceId: idParam },
       annotations: readOnlyAnnotations,
     },

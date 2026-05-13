@@ -4,6 +4,7 @@ import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js'
 import { CaddisApiClient } from './client.js';
 import { loadConfig } from './config.js';
 import { registerAllTools } from './tools/index.js';
+import { TOON_PRIMER } from './tools/schemas.js';
 
 async function main(): Promise<void> {
   const config = loadConfig();
@@ -12,9 +13,7 @@ async function main(): Promise<void> {
   const server = new McpServer(
     { name: 'lcm2m-caddis-mcp', version: '0.1.0' },
     {
-      instructions:
-        'Read-only access to the LCM2M Caddis VM2M API. Responses are CSV (uniform rows) ' +
-        'or YAML (nested/variable rows) to keep token usage low — parse accordingly.',
+      instructions: `Read-only access to the LCM2M Caddis VM2M API.\n\n${TOON_PRIMER}`,
     },
   );
 

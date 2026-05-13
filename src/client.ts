@@ -51,7 +51,7 @@ export class CompanySelectionRequiredError extends Error {
 }
 
 const ACCEPT_HEADERS: Record<Prefix, string> = {
-  vm2m: 'text/csv, text/yaml;q=0.9, */*;q=0.1',
+  vm2m: 'text/plain, */*;q=0.1',
   v1: 'application/json',
 };
 
@@ -67,8 +67,12 @@ export class CaddisApiClient {
     private readonly fetchFn: FetchLike = fetch,
   ) {}
 
-  vm2m(path: string, opts: RequestOpts = {}): Promise<CaddisResponse> {
-    return this.request('vm2m', path, opts);
+  async vm2m(path: string, opts: RequestOpts = {}): Promise<CaddisResponse> {
+    const res = await this.request('vm2m', path, opts);
+    // Fence the body so the model sees a single, unambiguous TOON document — matches
+    // toonformat.dev's "wrap input in a fenced code block" guidance, and clarifies
+    // section boundaries for multi-table responses like /tree.
+    return { ...res, body: `\`\`\`toon\n${res.body}\n\`\`\`` };
   }
 
   v1(path: string, opts: RequestOpts = {}): Promise<CaddisResponse> {
