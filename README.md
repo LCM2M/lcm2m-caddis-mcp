@@ -79,6 +79,7 @@ JSON-equivalent format mixing YAML-style nesting with CSV-style tables).
 - **Tags:** `list_tags`, `get_tag`, `list_tag_groups`, `get_tag_group`
 - **Runs:** `list_runs`, `get_run`, `get_run_cycles`
 - **Status reasons:** `list_status_reasons`
+- **Catalog:** `list_manufacturers`, `list_models`, `list_categories`
 
 ## Troubleshooting
 

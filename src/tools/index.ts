@@ -4,6 +4,7 @@ import type { Config } from '../config.js';
 import { registerCompositeTools } from './composite/index.js';
 import { ToolHandlerRegistry } from './registry.js';
 import { registerAlarmTools } from './wrappers/alarms.js';
+import { registerCatalogTools } from './wrappers/catalog.js';
 import { registerCompanyTools } from './wrappers/company.js';
 import { registerDeviceTools } from './wrappers/devices.js';
 import { registerEquipmentTools } from './wrappers/equipment.js';
@@ -24,5 +25,6 @@ export function registerAllTools(server: McpServer, client: CaddisApiClient, con
   registerTagGroupTools(server, client, registry);
   registerRunTools(server, client, registry);
   registerStatusReasonTools(server, client, registry);
+  registerCatalogTools(server, client, registry);
   registerCompositeTools(server, registry, config);
 }

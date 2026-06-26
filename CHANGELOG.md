@@ -14,6 +14,10 @@ include breaking changes in minor bumps; post-1.0, breaking changes bump major.
   piece of equipment under an org unit, bucketed into intervals. Mirrors
   `caddis_get_equipment_utilization` for the corresponding `/orgunits/{id}/utilization`
   route.
+- **`caddis_list_manufacturers`**, **`caddis_list_models`**, **`caddis_list_categories`**
+  — equipment-classification reference lists, mapping to the new `/manufacturers`,
+  `/models`, and `/categories` VM2M routes. `caddis_list_models` accepts an optional
+  `manufacturerId` to filter to a single manufacturer.
 
 ## [0.2.0] - 2026-04-17
 
